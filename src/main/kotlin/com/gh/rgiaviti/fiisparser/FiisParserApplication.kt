@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class FiisParserApplication
 
 fun main(args: Array<String>) {
-	runApplication<FiisParserApplication>(*args)
+    runApplication<FiisParserApplication>(*args)
 }

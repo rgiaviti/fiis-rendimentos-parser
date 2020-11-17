@@ -1,0 +1,10 @@
+spring:
+  main:
+    web-application-type: none
+  datasource:
+    name: FIIsParserDS
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: ${JDBC_URL:jdbc:mysql://localhost:3306/rendimentos_fiis}
+    username: ${DB_USER:root}
+    password: ${DB_PASS:root}
