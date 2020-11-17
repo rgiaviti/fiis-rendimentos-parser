@@ -9,7 +9,7 @@ data class FundoImobiliario(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id")
-        val id: Int,
+        val id: Int?,
 
         @Column(name = "ticker", nullable = false)
         val ticker: String,
@@ -20,6 +20,6 @@ data class FundoImobiliario(
         @Column(name = "ativo", nullable = false)
         val ativo: Boolean,
 
-        @OneToMany(mappedBy = "fundoImobiliario", targetEntity = Rendimento::class, fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+        @OneToMany(mappedBy = "fundoImobiliario", targetEntity = Rendimento::class)
         val rendimentos: List<Rendimento>
 )

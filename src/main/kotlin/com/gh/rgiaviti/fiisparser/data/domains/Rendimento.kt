@@ -12,9 +12,9 @@ data class Rendimento(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id")
-        val id: Int,
+        val id: Int?,
 
-        @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], targetEntity = FundoImobiliario::class)
+        @ManyToOne(targetEntity = FundoImobiliario::class)
         @JoinColumn(name = "fii_id", nullable = false)
         val fundoImobiliario: FundoImobiliario,
 
