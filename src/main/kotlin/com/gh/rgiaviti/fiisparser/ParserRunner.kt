@@ -17,7 +17,7 @@ class ParserRunner(
 
     companion object {
         private val log by lazy { KotlinLogging.logger {} }
-        private val waitTime = 10
+        private const val waitTime = 10
     }
 
     override fun run(vararg args: String?) {

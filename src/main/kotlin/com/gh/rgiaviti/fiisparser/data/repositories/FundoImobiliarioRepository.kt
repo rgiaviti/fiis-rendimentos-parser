@@ -9,6 +9,6 @@ import java.util.*
 @Repository
 interface FundoImobiliarioRepository : JpaRepository<FundoImobiliario, Int> {
 
-    @Query("SELECT fii FROM FundoImobiliario fii WHERE lower(fii.ticker) = lower(?1)")
+    @Query("SELECT fii FROM FundoImobiliario fii WHERE lower(fii.ticker) = lower(?1) ORDER BY fii.nome")
     fun getByTicker(ticker: String): Optional<FundoImobiliario>
 }
