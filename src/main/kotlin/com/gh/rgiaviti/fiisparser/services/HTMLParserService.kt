@@ -8,6 +8,7 @@ import com.gh.rgiaviti.fiisparser.services.Constantes.MAX_TIMOUTS_TRIES
 import com.gh.rgiaviti.fiisparser.services.Constantes.TABELA_RENDIMENTOS_SELECTOR
 import com.gh.rgiaviti.fiisparser.services.Constantes.USER_AGENT
 import mu.KotlinLogging
+import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.springframework.stereotype.Service
@@ -36,7 +37,7 @@ class HTMLParserService {
     }
 
     fun extrairRendimentos(ticker: String): List<RendimentoDTO> {
-        log.info("Extraindo Rendimentos para o Fundo Imobiliário: {}", ticker.toUpperCase())
+        log.info(":: Extraindo Rendimentos para o Fundo Imobiliário: {}", ticker.toUpperCase())
         val rendimentos = mutableListOf<RendimentoDTO>()
         val document = this.getDocument(ticker)
         val tabelaSelecionada = document.select(TABELA_RENDIMENTOS_SELECTOR)
@@ -68,6 +69,14 @@ class HTMLParserService {
                         .get()
             } catch (ex: SocketTimeoutException) {
                 log.warn(":: Timeout no request para o ticker {}", ticker)
+            } catch (ex: HttpStatusException) {
+                log.error(":: HTTP Status Error no Request para o ticker {}", ticker)
+                log.error(":: URL: {}", ex.url)
+                log.error(":: HTTP Status Code: {}", ex.statusCode)
+                log.error(":: Mensagem: {}", ex.message)
+            } catch (ex: Exception) {
+                log.error(":: Erro Desconhecido no Request para o ticker {}", ticker)
+                log.error(":: Mensagem: {}", ex.message)
             }
         } while (tentativasRequest.get() < MAX_TIMOUTS_TRIES)
 
