@@ -37,7 +37,7 @@ class HTMLParserService {
     }
 
     fun extrairRendimentos(ticker: String): List<RendimentoDTO> {
-        log.info(":: Extraindo Rendimentos para o Fundo Imobiliário: {}", ticker.toUpperCase())
+        log.info(" :: Extraindo Rendimentos para o Fundo Imobiliário: {}", ticker.toUpperCase())
         val rendimentos = mutableListOf<RendimentoDTO>()
         val document = this.getDocument(ticker)
         val tabelaSelecionada = document.select(TABELA_RENDIMENTOS_SELECTOR)
@@ -68,21 +68,21 @@ class HTMLParserService {
                         .timeout(5000)
                         .get()
             } catch (ex: SocketTimeoutException) {
-                log.warn(":: Timeout no request para o ticker {}", ticker)
+                log.warn(" :: Timeout no request para o ticker {}", ticker)
             } catch (ex: HttpStatusException) {
-                log.error(":: HTTP Status Error no Request para o ticker {}", ticker)
-                log.error(":: URL: {}", ex.url)
-                log.error(":: HTTP Status Code: {}", ex.statusCode)
-                log.error(":: Mensagem: {}", ex.message)
+                log.error(" :: HTTP Status Error no Request para o ticker {}", ticker)
+                log.error(" :: URL: {}", ex.url)
+                log.error(" :: HTTP Status Code: {}", ex.statusCode)
+                log.error(" :: Mensagem: {}", ex.message)
             } catch (ex: Exception) {
-                log.error(":: Erro Desconhecido no Request para o ticker {}", ticker)
-                log.error(":: Mensagem: {}", ex.message)
+                log.error(" :: Erro Desconhecido no Request para o ticker {}", ticker)
+                log.error(" :: Mensagem: {}", ex.message)
             }
         } while (tentativasRequest.get() < MAX_TIMOUTS_TRIES)
 
-        log.error("Máximo de tentativas atingido para -> {}", ticker)
-        log.error("Tentativas: {}/{}", tentativasRequest.get(), MAX_TIMOUTS_TRIES)
-        log.error("Interrompendo a execução")
+        log.error(" :: Máximo de tentativas atingido para -> {}", ticker)
+        log.error(" :: Tentativas: {}/{}", tentativasRequest.get(), MAX_TIMOUTS_TRIES)
+        log.error(" :: Interrompendo a execução")
 
         throw SocketTimeoutException()
     }
