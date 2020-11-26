@@ -60,6 +60,7 @@ abstract class AbstractHTMLParser {
             .toDouble()
 
     protected fun toBigDecimal(value: String) = BigDecimal(value
+            .replace(".", "")
             .replace(",", ".")
             .replace("R", "")
             .replace("$", "")
