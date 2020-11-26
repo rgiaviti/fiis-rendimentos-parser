@@ -3,6 +3,7 @@ package com.gh.rgiaviti.fiisparser.services
 import com.gh.rgiaviti.fiisparser.data.domains.FundoImobiliario
 import com.gh.rgiaviti.fiisparser.data.domains.Rendimento
 import com.gh.rgiaviti.fiisparser.data.repositories.RendimentoRepository
+import com.gh.rgiaviti.fiisparser.services.htmlparsers.RendimentoDTO
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation

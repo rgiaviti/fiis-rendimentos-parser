@@ -2,8 +2,9 @@ package com.gh.rgiaviti.fiisparser
 
 import com.gh.rgiaviti.fiisparser.data.domains.FundoImobiliario
 import com.gh.rgiaviti.fiisparser.services.FundoImobiliarioService
-import com.gh.rgiaviti.fiisparser.services.HTMLParserService
 import com.gh.rgiaviti.fiisparser.services.RendimentosService
+import com.gh.rgiaviti.fiisparser.services.htmlparsers.FIIsHTMLParserService
+import com.gh.rgiaviti.fiisparser.services.htmlparsers.RendimentosHTMLParserService
 import mu.KotlinLogging
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
@@ -11,7 +12,8 @@ import java.util.concurrent.TimeUnit
 
 @Component
 class ParserRunner(
-        private val htmlParserService: HTMLParserService,
+        private val rendimentosHTMLParserService: RendimentosHTMLParserService,
+        private val fiisHTMLParserService: FIIsHTMLParserService,
         private val fundoImobiliarioService: FundoImobiliarioService,
         private val rendimentosService: RendimentosService
 ) : CommandLineRunner {
@@ -21,40 +23,47 @@ class ParserRunner(
     }
 
     override fun run(vararg args: String?) {
+        this.sincronizarFundosImobiliarios()
+
         if (args.isEmpty()) {
-            this.sincronizarTodosAtivos()
+            this.sincronizarTodosRendimentos()
         } else {
-            this.sincronizarAtivosEspecificos(args.asList())
+            this.sincronizarRendimentosEspecificos(args.asList())
         }
     }
 
-    fun sincronizarAtivosEspecificos(tickers: List<String?>) {
+    fun sincronizarFundosImobiliarios() {
+        val fiisAtualizados = this.fiisHTMLParserService.extrairFundosImobiliarios()
+        this.fundoImobiliarioService.sincronizarFundosImobiliarios(fiisAtualizados)
+    }
+
+    fun sincronizarRendimentosEspecificos(tickers: List<String?>) {
         tickers.forEach {
             this.fundoImobiliarioService.getByTicker(it!!).ifPresent { fii ->
-                this.sincronizarAtivo(fii)
+                this.sincronizarRendimento(fii)
                 waitForNextFii()
             }
         }
     }
 
-    fun sincronizarTodosAtivos() {
+    fun sincronizarTodosRendimentos() {
         val fiis = this.fundoImobiliarioService.listarAtivos()
 
         fiis.parallelStream().forEach {
-            this.sincronizarAtivo(it)
+            this.sincronizarRendimento(it)
             waitForNextFii()
         }
     }
 
-    fun sincronizarAtivo(fii: FundoImobiliario) {
+    private fun sincronizarRendimento(fii: FundoImobiliario) {
         log.info(" :: Processando o Fundo Imobiliário: {}", fii.ticker)
-        val rendimentos = htmlParserService.extrairRendimentos(fii.ticker)
+        val rendimentos = this.rendimentosHTMLParserService.extrairRendimentos(fii.ticker)
         this.rendimentosService.inserirRendimentos(fii, rendimentos)
         log.info(" :: Finalizado o Processamento do Fundo Imobiliário: {}", fii.ticker)
     }
 
     private fun waitForNextFii() {
-        val waitTime = (5..15).random().toLong()
+        val waitTime = (10..25).random().toLong()
         log.info(" :: Aguardando por $waitTime segundos até o próximo FII")
         Thread.sleep(TimeUnit.SECONDS.toMillis(waitTime))
     }
