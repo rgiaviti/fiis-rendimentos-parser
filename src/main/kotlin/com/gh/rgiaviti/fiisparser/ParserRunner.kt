@@ -49,7 +49,7 @@ class ParserRunner(
     fun sincronizarTodosRendimentos() {
         val fiis = this.fundoImobiliarioService.listarAtivos()
 
-        fiis.stream().forEach {
+        fiis.parallelStream().forEach {
             this.sincronizarRendimento(it)
             waitForNextFii()
         }

@@ -1,5 +1,6 @@
 package com.gh.rgiaviti.fiisparser.services.htmlparsers
 
+import com.gh.rgiaviti.fiisparser.core.exceptions.FIIParserException
 import mu.KotlinLogging
 import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
@@ -50,7 +51,7 @@ abstract class AbstractHTMLParser {
         log.error(" :: Tentativas: {}/{}", tentativasRequest.get(), MAX_TIMOUTS_TRIES)
         log.error(" :: Interrompendo a execução")
 
-        throw SocketTimeoutException()
+        throw FIIParserException("falha na tentativa de obtenção de dados da url: $url")
     }
 
     protected fun toDouble(value: String) = value
