@@ -1,3 +1,23 @@
-greeting:
-  message: "hello"
-  name: "quarkus"
+quarkus:
+  application:
+    name: Meus FIIs
+    version: 1.0.0
+  datasource:
+    db-kind: mysql
+    username: ${DB_USER:root}
+    password: ${DB_PASS:root}
+    jdbc:
+      url: ${JDBC_URL:jdbc:mysql://localhost:3306/rendimentos_fiis}
+      driver: com.mysql.cj.jdbc.Driver
+      detect-statement-leaks: true
+      initial-size: 8
+      max-size: 20
+      min-size: 8
+  hibernate-orm:
+    database:
+      charset: UTF-8
+      generation:
+        ~: none
+    second-level-caching-enabled: false
+    dialect:
+      ~: org.hibernate.dialect.MySQL5InnoDBDialect
