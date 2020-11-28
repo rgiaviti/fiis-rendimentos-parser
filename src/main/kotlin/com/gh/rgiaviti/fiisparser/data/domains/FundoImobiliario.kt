@@ -14,7 +14,7 @@ data class FundoImobiliario(
         @Column(name = "ticker", nullable = false)
         val ticker: String,
 
-        @Column(name = "nome", nullable = false)
+        @Column(name = "razao_social", nullable = false)
         val nome: String,
 
         @Column(name = "ativo", nullable = false)

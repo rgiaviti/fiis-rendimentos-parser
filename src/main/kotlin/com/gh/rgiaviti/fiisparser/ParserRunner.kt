@@ -23,7 +23,7 @@ class ParserRunner(
     }
 
     override fun run(vararg args: String?) {
-        this.sincronizarFundosImobiliarios()
+        //this.sincronizarFundosImobiliarios()
 
         if (args.isEmpty()) {
             this.sincronizarTodosRendimentos()
@@ -63,7 +63,7 @@ class ParserRunner(
     }
 
     private fun waitForNextFii() {
-        val waitTime = (10..25).random().toLong()
+        val waitTime = (3..7).random().toLong()
         log.info(" :: Aguardando por $waitTime segundos até o próximo FII")
         Thread.sleep(TimeUnit.SECONDS.toMillis(waitTime))
     }
