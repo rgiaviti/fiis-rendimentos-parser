@@ -1,6 +1,6 @@
 package com.gh.rag.invest.fiis;
 
-import com.gh.rag.invest.fiis.services.FundoImobiliarioService;
+import com.gh.rag.invest.fiis.business.services.FundoImobiliarioService;
 import javax.inject.Inject;
 import picocli.CommandLine;
 
